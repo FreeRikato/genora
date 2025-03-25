@@ -3,17 +3,15 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Github, Moon, Settings, Sun } from "lucide-react"
+import { Github, Settings, CircleCheck } from "lucide-react"
 import { FcGoogle } from "react-icons/fc"
-import { ThemeProvider } from "@/components/theme-provider"
-import { useTheme } from "next-themes"
 import { SettingsModal } from "@/components/settings-modal"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark">
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-background relative overflow-hidden">
         {/* Background gradient elements */}
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl"></div>
@@ -22,23 +20,14 @@ export default function Home() {
 
         {isLoggedIn ? <EditorScreen setIsLoggedIn={setIsLoggedIn} /> : <AuthScreen setIsLoggedIn={setIsLoggedIn} />}
       </div>
-    </ThemeProvider>
   )
 }
 
 function AuthScreen({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) {
-  const { theme, setTheme } = useTheme()
 
   return (
     <div className="container relative flex flex-col items-center justify-center min-h-screen px-4">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute right-4 top-4"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      >
-        {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-      </Button>
+      <ThemeToggle />
 
       <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-border/50">
         <CardHeader className="space-y-2 items-center text-center">
@@ -84,7 +73,6 @@ function AuthScreen({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void
 }
 
 function EditorScreen({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) {
-  const { theme, setTheme } = useTheme()
   const [selectedVersion, setSelectedVersion] = useState(1)
   const [prompt, setPrompt] = useState("")
   const [imageCount, setImageCount] = useState(5)
@@ -139,9 +127,7 @@ function EditorScreen({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => vo
             </Button>
             <h2 className="font-medium">Editing: Version {selectedVersion}</h2>
           </div>
-          <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </Button>
+          <ThemeToggle />
         </div>
 
         <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
@@ -203,21 +189,7 @@ function EditorScreen({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => vo
                   </div>
                   <div className="p-2 flex justify-between">
                     <Button variant="ghost" size="icon" className="h-7 w-7">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                        <polyline points="16 6 12 2 8 6"></polyline>
-                        <line x1="12" y1="2" x2="12" y2="15"></line>
-                      </svg>
+                      <CircleCheck className="h-5 w-5" />
                     </Button>
                     <Button variant="ghost" size="icon" className="h-7 w-7">
                       <svg
